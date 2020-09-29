@@ -27,7 +27,8 @@ ActiveRecord::Schema.define(version: 2020_09_28_202802) do
 
   create_table "users", force: :cascade do |t|
     t.string "username"
-    t.integer "score"
+    t.string "password"
+    t.integer "score", default: 0
   end
 
 end
