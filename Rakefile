@@ -1,6 +1,8 @@
 require_relative './config/environment'
 require 'sinatra/activerecord/rake'
 require 'pry'
+# require 'dotenv'
+# Dotenv.load
 
 desc "Start our app console"
 

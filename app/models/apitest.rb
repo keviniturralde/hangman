@@ -1,6 +1,8 @@
 require 'httparty'
 require 'json'
 require 'pry'
+require 'dotenv'
+Dotenv.load('./.env')
 
 
 class ApiTest
@@ -15,10 +17,10 @@ class ApiTest
     
     def define
         
-        response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{@word}?key=#{$key}")
+        response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{@word}?key=#{ENV['WEBSTER_KEY']}")
         json = JSON.parse(response.body)
         if json[0].is_a?(String)
-            response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{json[0]}?key=#{$key}")
+            response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{json[0]}?key=#{ENV['WEBSTER_KEY']}")
             json = JSON.parse(response.body)
             definition = json[0].dig("def")
             definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]

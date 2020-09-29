@@ -8,4 +8,5 @@ gem 'require_all'
 gem 'sqlite3'
 gem 'pry'
 gem 'httparty'
-gem 'dotenv-rails'
+gem 'dotenv'
+
