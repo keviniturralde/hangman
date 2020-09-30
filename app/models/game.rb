@@ -10,7 +10,7 @@ Dotenv.load('./.env')
 class Game < ActiveRecord::Base
     has_many :userGames
     has_many :users, through: :userGames    
-    
+
     def random_word
         response = HTTParty.get("https://raw.githubusercontent.com/RazorSh4rk/random-word-api/master/words.json")
         json = JSON.parse(response.body)

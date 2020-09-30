@@ -5,12 +5,9 @@ class User < ActiveRecord::Base
     has_many :games, through: :userGames
 end
 
-def existing_user?
-    self.find_or_create_by(username: self)
-end 
 
 
-def score 
-    @score = self.userGames.map {|ug|ug.won_game == true}.count
-end 
+# def score 
+#     @score = self.userGames.map {|ug|ug.won_game == true}.count
+# end 
 
