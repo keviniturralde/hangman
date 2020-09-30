@@ -51,6 +51,8 @@ class Game < ActiveRecord::Base
         end
     end
 
+
+
     # def guesses 
     #     gets.chomp 
     # end 

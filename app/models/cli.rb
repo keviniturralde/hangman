@@ -9,6 +9,7 @@ def run
     if choice == "Play a game"
     puts "What is your username?"
     username = gets.chomp
+
     else choice == "Check the Leaderboard"
     end 
 end 
