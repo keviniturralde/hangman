@@ -6,6 +6,7 @@ require 'pry'
 desc "Start our app console"
   task :console do
     ActiveRecord::Base.logger = Logger.new(STDOUT)
+    
     Pry.start
   end
 require_all 'app/models'

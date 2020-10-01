@@ -14,47 +14,47 @@ class Game < ActiveRecord::Base
     def random_word
         response = HTTParty.get("https://raw.githubusercontent.com/RazorSh4rk/random-word-api/master/words.json")
         json = JSON.parse(response.body)
-        @word = json.sample
+        sample = json.sample
 
-        case difficulty
-        when "easy"
-            while @word.length > 5 do
-                @word = json.sample
+        case self.difficulty
+        when "Easy"
+            while sample.length > 5 do
+                sample = json.sample
             end
-        when "hard"
-            while @word.length < 9 do
-                @word = json.sample
+    
+        when "Hard"
+            while sample.length < 9 do
+                sample = json.sample
             end
-        else
-            until @word.length == (6..8)
-                @word = json.sample
+            
+        when "Medium"
+            until sample.length == (6..8)
+                sample = json.sample
             end
+            
         end
-        @word
+        self.word = sample
     end
     
-# binding.pry
-
 
     def define
-        
-        response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{@word}?key=#{ENV['WEBSTER_KEY']}")
+        response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{self.word}?key=#{ENV['WEBSTER_KEY']}")
         json = JSON.parse(response.body)
         if json[0].is_a?(String)
             response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{json[0]}?key=#{ENV['WEBSTER_KEY']}")
             json = JSON.parse(response.body)
             definition = json[0].dig("def")
-            @hint = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
+            entry = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
+            self.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "")
         else
             definition = json[0].dig("def")
-            @hint = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
+            entry = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
+            self.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "")
         end
     end
-
-
-
-    # def guesses 
-    #     gets.chomp 
-    # end 
-    
 end
+
+
+
+
+# binding.pry

@@ -8,7 +8,7 @@ require_relative '../config/environment.rb'
 system('clear')
 game = Cli.new
 # game.title_screen
-game.welcome
+game.populate
 
 # def move_cursor_to_required_coordinates(text)
 #     x = (@width - text.length) / 2
