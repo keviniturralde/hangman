@@ -160,9 +160,9 @@ class Cli
         if User.all.map { |user| user.username }.include? (user[:username])
             puts "Sorry, that name has already been taken, please choose a new name."
             sleep(3)
-            self.sign_up
+            self.play_a_game
         else
-            User.create(user)
+            @current_user = User.create(user)
             self.difficulty_level
         end
     end
@@ -174,6 +174,7 @@ class Cli
             key(:password).mask("Please enter your password")
         end
         if User.exists?(user)
+            @current_user = User.find_by_username(user[:username])
             self.difficulty_level
         else 
             puts "Incorrect username or password"
@@ -197,16 +198,17 @@ class Cli
         current_game.random_word
         current_game.define
         current_game.save
+        UserGame.create({user_id: @current_user.id, game_id: current_game.id})
     end
 
-    def populate
-        10.times do
-            Game.create({difficulty: "Hard"})
-            current_game = Game.last
-            current_game.random_word
-            current_game.define
-            current_game.save
-        end
-    end
+    # def populate
+    #     10.times do
+    #         Game.create({difficulty: "Hard"})
+    #         current_game = Game.last
+    #         current_game.random_word
+    #         current_game.define
+    #         current_game.save
+    #     end
+    # end
 end
 

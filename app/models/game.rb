@@ -27,11 +27,10 @@ class Game < ActiveRecord::Base
                 sample = json.sample
             end
             
-        when "Medium"
+        when "Medium" 
             until sample.length == (6..8)
                 sample = json.sample
-            end
-            
+            end  
         end
         self.word = sample
     end
