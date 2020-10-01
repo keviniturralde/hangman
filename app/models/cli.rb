@@ -12,30 +12,30 @@ require 'tty-prompt'
 
 class Cli
 
-
     def title_screen
-        a = Artii::Base.new :font => 'isometric2'
+        a = Artii::Base.new :font => 'alligator'
         3.times do 
         system("clear")
         puts a.asciify('_______').light_green
-        sleep(0.5)
+        sleep(0.3)
         system("clear")
         puts a.asciify('H______').light_green
-        sleep(0.5)
+        sleep(0.3)
         system("clear")
         puts a.asciify('H__G___').light_green
-        sleep(0.5)
+        sleep(0.3)
         system("clear")
         puts a.asciify('H__GM__').light_green
-        sleep(0.5)
+        sleep(0.3)
         system("clear")
         puts a.asciify('H_NGM_N').light_green
-        sleep(0.5)
+        sleep(0.3)
         system("clear")
         puts a.asciify('HANGMAN').light_green
-        sleep(2)
+        sleep(1)
         system("clear")
         end
+        self.welcome
     end
 
     # def intro2
@@ -128,10 +128,13 @@ class Cli
             puts "A Leader Board"
         when "Exit"
             system('clear')
-            puts "Goodbye!" 
+            a = Artii::Base.new :font => 'alligator' 
+            puts a.asciify('Goodbye!').red
+            sleep(3)
         end
     end
     
+
     def play_a_game
         system('clear')
         start_menu = TTY::Prompt.new.select("Sign up or Log in") do |menu|
@@ -153,20 +156,31 @@ class Cli
     def sign_up
         system('clear')
         user = TTY::Prompt.new.collect do
-            key(:username).ask("Please create a username.")
-            key(:password).mask("Create your new Password!")
+            key(:username).ask("Please enter your Username")
+            key(:password).mask("Create your new Password")
         end
         #check against usernames that exist so that the same username wont be used twice
         if User.all.map { |user| user.username }.include? (user[:username])
-            puts "Sorry, that name has already been taken, please choose a new name."
-            sleep(3)
-            self.play_a_game
+            puts "Sorry, that name has already been taken"
+            sleep(2)
+            attempt = TTY::Prompt.new.select("Sign up or Log in") do |menu|
+                menu.choice "Try Again"
+                menu.choice "Back"
+            end
+            case attempt
+            when "Try Again"
+                self.sign_up
+            when "Back"
+                self.play_a_game
+            end
+
         else
             @current_user = User.create(user)
             self.difficulty_level
         end
     end
-        
+      
+    
     def log_in
         system('clear')
         user = TTY::Prompt.new.collect do
@@ -193,22 +207,15 @@ class Cli
         self.set_game
     end
 
+
     def set_game
-        current_game = Game.last
-        current_game.random_word
-        current_game.define
-        current_game.save
-        UserGame.create({user_id: @current_user.id, game_id: current_game.id})
+        @current_game = Game.last
+        @current_game.random_word
+        @current_game.define
+        @current_game.save
+        @current_user_game = UserGame.create({user_id: @current_user.id, game_id: @current_game.id})
+        @current_game.start
     end
 
-    # def populate
-    #     10.times do
-    #         Game.create({difficulty: "Hard"})
-    #         current_game = Game.last
-    #         current_game.random_word
-    #         current_game.define
-    #         current_game.save
-    #     end
-    # end
 end
 
