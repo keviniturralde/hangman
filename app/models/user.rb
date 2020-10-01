@@ -6,8 +6,12 @@ class User < ActiveRecord::Base
 end
 
 
+# user.score += 1 if user.user_game.won_game == true
 
-# def score 
-#     @score = self.userGames.map {|ug|ug.won_game == true}.count
+# def self.calculate_score 
+#     self.all.map { |user| user.score = }
+#            @score = UserGame.won_game.count
+#         end 
+#     end 
 # end 
 

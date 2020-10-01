@@ -50,6 +50,8 @@ GEM
       activerecord (>= 4.1)
       sinatra (>= 1.0)
     sqlite3 (1.4.2)
+    terminal-table (1.8.0)
+      unicode-display_width (~> 1.1, >= 1.1.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
     tty-color (0.5.2)
@@ -64,6 +66,7 @@ GEM
     tty-screen (0.8.1)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
+    unicode-display_width (1.7.0)
     wisper (2.0.1)
     zeitwerk (2.4.0)
 
@@ -81,6 +84,7 @@ DEPENDENCIES
   require_all
   sinatra-activerecord
   sqlite3
+  terminal-table
   tty-prompt
 
 BUNDLED WITH

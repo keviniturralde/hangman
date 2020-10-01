@@ -7,6 +7,7 @@ require 'artii'
 require 'colorize'
 require 'active_record'
 require 'tty-prompt'
+require 'terminal-table'
 
 
 
@@ -125,13 +126,26 @@ class Cli
         when "Play a Game"
             self.play_a_game
         when "Leader Board"
-            puts "A Leader Board"
+            self.leaderboard
         when "Exit"
             system('clear')
             a = Artii::Base.new :font => 'alligator' 
             puts a.asciify('Goodbye!').red
             sleep(3)
         end
+    end
+
+    def leaderboard
+        top_users = User.order('score DESC limit 3')
+        rows = []
+        rows << [top_users[0].username, top_users[0].score]
+        rows << [top_users[1].username, top_users[1].score]
+        rows << [top_users[2].username, top_users[2].score]
+        table = Terminal::Table.new :title => "Leaderboard", :headings => ['Username', 'Games Won'], :rows => rows 
+        system('clear')
+        puts table
+        TTY::Prompt.new.keypress("Press any key to return to the main menu")
+        self.welcome
     end
     
 
@@ -192,6 +206,7 @@ class Cli
             self.difficulty_level
         else 
             puts "Incorrect username or password"
+            sleep(2)
             self.play_a_game  
         end
     end

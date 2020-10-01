@@ -16,23 +16,18 @@ class Game < ActiveRecord::Base
     def random_word
         response = HTTParty.get("https://raw.githubusercontent.com/RazorSh4rk/random-word-api/master/words.json")
         json = JSON.parse(response.body)
-        sample = json.sample
-
+        json = json.select { |word| word.length > 3 && word.length < 14 }
+        easy = json.select { |word| word.length < 6}
+        medium = json.select { |word| word.length > 5 && word.length < 10 }
+        hard = json.select { |word| word.length > 9 }
+        
         case self.difficulty
         when "Easy"
-            while sample.length > 5 do
-                sample = json.sample
-            end
-    
+            sample = easy.sample
         when "Hard"
-            while sample.length < 9 do
-                sample = json.sample
-            end
-            
+            sample = hard.sample  
         when "Medium" 
-            until sample.length == (6..8)
-                sample = json.sample
-            end  
+            sample = medium.sample
         end
         self.word = sample
     end
@@ -81,6 +76,7 @@ class Game < ActiveRecord::Base
             else
                 puts "Guess a letter!"
                 puts "Wrong Guesses: #{@wrong_guess.join(",")}".red
+                puts "You have #{self.available_guesses} guesses remaining!"
                 puts "Your hint is: #{self.hint}"
                 word_array = self.word.split("")
                 guess = gets.chomp
@@ -112,9 +108,11 @@ class Game < ActiveRecord::Base
     end
 
     def win
-        @current_user_game = UserGame.last
-        @current_user_game.won_game = true
-        @current_user_game.save
+        current_user_game = UserGame.last
+        current_user_game.won_game = true
+        current_user_game.save
+        current_user_game.user.score += 1
+        current_user_game.user.save
         system("clear")
         puts "#{self.word.green} : #{self.hint}"
         puts "You WIN!"
