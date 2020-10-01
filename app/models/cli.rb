@@ -149,8 +149,37 @@ class Cli
         table = Terminal::Table.new :title => "Leaderboard", :headings => ['Username', 'Games Won'], :rows => rows 
         system('clear')
         puts table
-        TTY::Prompt.new.keypress("Press any key to return to the main menu")
-        self.welcome
+
+        menuselect = TTY::Prompt.new.select("Choose an option") do |menu|
+            menu.choice "Check user's Stats"
+            menu.choice "Go back to main menu"
+        end
+
+        case menuselect
+        when "Check user's Stats"
+            userselect = TTY::Prompt.new.select("Select a user", per_page: 5) do |menu|
+                User.all.each {|user|menu.choice "#{user.username}" }
+            end
+            stats = UserGame.all.select { |ug| ug.user_id == User.find_by_username(userselect).id }
+            rows = []
+            stats.each { |ug| rows << [ug.game_id, Game.find(ug.game_id).difficulty, ug.won_game, Game.find(ug.game_id).word]}
+            table2 = Terminal::Table.new :title => "User Stats for #{stats[0].user.username}", :headings => ['Game ID','Difficulty', 'Won?', 'Word'], :rows => rows
+            puts table2
+
+            menuselect2 = TTY::Prompt.new.select("Choose an option") do |menu|
+                menu.choice "Go back to leaderboard"
+                menu.choice "Go back to main menu"
+            end
+            
+            case menuselect2
+            when "Go back to leaderboard"
+                self.leaderboard
+            when "Go back to main menu"
+                self.welcome
+            end
+        when "Go back to main menu"
+            self.welcome
+        end
     end
     
 
