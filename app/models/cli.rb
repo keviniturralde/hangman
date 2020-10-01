@@ -8,6 +8,11 @@ require 'colorize'
 require 'active_record'
 require 'tty-prompt'
 require 'terminal-table'
+require 'httparty'
+require 'json'
+require 'dotenv'
+Dotenv.load('./.env')
+
 
 
 
@@ -225,12 +230,146 @@ class Cli
 
     def set_game
         @current_game = Game.last
-        @current_game.random_word
-        @current_game.define
+        self.random_word
+        self.define
         @current_game.save
         @current_user_game = UserGame.create({user_id: @current_user.id, game_id: @current_game.id})
-        @current_game.start
+        self.start
     end
 
+    def random_word
+        response = HTTParty.get("https://raw.githubusercontent.com/RazorSh4rk/random-word-api/master/words.json")
+        json = JSON.parse(response.body)
+        json = json.select { |word| word.length > 3 && word.length < 14 }
+        easy = json.select { |word| word.length < 6}
+        medium = json.select { |word| word.length > 5 && word.length < 10 }
+        hard = json.select { |word| word.length > 9 }
+        
+        case @current_game.difficulty
+        when "Easy"
+            sample = easy.sample
+        when "Hard"
+            sample = hard.sample  
+        when "Medium" 
+            sample = medium.sample
+        end
+        @current_game.word = sample
+    end
+
+    def define
+        response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{@current_game.word}?key=#{ENV['WEBSTER_KEY']}")
+        json = JSON.parse(response.body)
+        if json[0].is_a?(String)
+            response = HTTParty.get("https://dictionaryapi.com/api/v3/references/collegiate/json/#{json[0]}?key=#{ENV['WEBSTER_KEY']}")
+            json = JSON.parse(response.body)
+            definition = json[0].dig("def")
+            entry = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
+            @current_game.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "")
+        else
+            definition = json[0].dig("def")
+            entry = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
+            @current_game.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "")
+        end
+    end
+
+    def start
+        system('clear')
+        prompt = TTY::Prompt.new
+        prompt.keypress("Your word is #{@current_game.word.length} letters long! Press space or enter to continue", keys: [:space, :return])
+        prompt.keypress("Your hint is: #{@current_game.hint}", keys: [:space, :return])
+        prompt.keypress("Make #{@current_game.available_guesses} incorrect guesses, and you lose!", keys: [:space, :return])
+        self.word_teaser
+    end
+
+    def word_teaser
+        @teaser = []
+        @wrong_guess = []
+        @current_game.word.length.times do
+            @teaser << "_ "
+        end
+        puts @teaser.join("")
+        self.make_a_guess
+    end
+
+    def make_a_guess
+        if @current_game.available_guesses > 0
+            if @teaser.join("") == @current_game.word
+                self.win
+            else
+                puts "Guess a letter!"
+                puts "Wrong Guesses: #{@wrong_guess.join(",")}".red
+                puts "You have #{@current_game.available_guesses} guesses remaining!"
+                puts "Your hint is: #{@current_game.hint}"
+                word_array = @current_game.word.split("")
+                guess = gets.chomp
+                
+                if word_array.include?(guess)
+                    system('clear')
+                    @teaser.each_with_index do |char, i| 
+                        if word_array[i] == guess
+                            @teaser[i] = guess
+                        end
+                    end
+                    puts "Nice!"
+                    puts @teaser.join("") 
+                    self.make_a_guess
+                else
+                    system('clear')
+                    @current_game.available_guesses -= 1
+                    @wrong_guess << guess
+                    puts "Sorry, your guess was incorrect. You have #{@current_game.available_guesses} guesses remaining!"
+                    puts @teaser.join("") 
+                    self.make_a_guess
+                end
+            end
+        else
+            system('clear')
+            puts "You Lose!"
+            puts "The correct word was #{@current_game.word}!"
+            sleep(2)
+            again = TTY::Prompt.new.select("Would you like to play again?") do |menu|
+                menu.choice "Yes"
+                menu.choice "No"
+                menu.choice "Exit"
+            end 
+            case again
+            when "Yes"
+                self.difficulty_level
+            when "No"
+                self.welcome
+            when "Exit"
+                puts "Thanks for playing!"
+                sleep(2)
+            end
+        end
+    end
+
+    def win
+        @current_user_game.won_game = true
+        @current_user_game.save
+        @current_user.score += 1
+        @current_user.save
+        system("clear")
+        puts "#{@current_game.word.green} : #{@current_game.hint}"
+        puts "You WIN!"
+        sleep(2)
+        again = TTY::Prompt.new.select("Would you like to play again?") do |menu|
+            menu.choice "Yes"
+            menu.choice "No"
+            menu.choice "Exit"
+        end 
+        case again
+        when "Yes"
+            self.difficulty_level
+        when "No"
+            self.welcome
+        when "Exit"
+            puts "Thanks for playing!"
+            sleep(2)
+        end
+    end
 end
+
+
+
 
