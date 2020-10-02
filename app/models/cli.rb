@@ -81,45 +81,45 @@ class Cli
         sleep(0.3)
         puts "|/|".center(50)
         sleep(0.3)
-        puts "|/| /¯)".center(50)
+        puts "   |/| /¯)".center(50)
         sleep(0.3)
-        puts "|/|/ /".center(50)
+        puts "  |/|/ /".center(50)
         sleep(0.3)
-        puts "|/| /".center(50)
+        puts " |/| /".center(50)
         sleep(0.3)
-        puts "(¯¯¯)".center(50)
+        puts " (¯¯¯)".center(50)
         sleep(0.3)
-        puts "(¯¯¯)".center(50)
+        puts " (¯¯¯)".center(50)
         sleep(0.3)
-        puts "(¯¯¯)".center(50)
+        puts " (¯¯¯)".center(50)
         sleep(0.3)
-        puts "(¯¯¯)".center(50)
+        puts " (¯¯¯)".center(50)
         sleep(0.3)
-        puts "(¯¯¯)".center(50)
+        puts " (¯¯¯)".center(50)
         sleep(0.3)
-        puts "/¯¯/ ".center(50)
+        puts " /¯¯/ ".center(50)
         sleep(0.3)
-        puts "/ ,^./ ".center(50)
+        puts " / ,^./ ".center(50)
         sleep(0.3)
-        puts "/ /    / ".center(50)
+        puts " / /    / ".center(50)
         sleep(0.3)
-        puts "/ /      / ".center(50)
+        puts " / /      / ".center(50)
         sleep(0.3)
-        puts "( (       )/)".center(50)
+        puts " ( (       )/)".center(50)
         sleep(0.3)
-        puts "| |       |/|".center(50)
+        puts " | |       |/|".center(50)
         sleep(0.3)
-        puts "| |       |/|".center(50)
+        puts " | |       |/|".center(50)
         sleep(0.3)
-        puts "| |       |/|".center(50)
+        puts " | |       |/|".center(50)
         sleep(0.3)
-        puts "( (       )/)".center(50)
+        puts " ( (       )/)".center(50)
         sleep(0.3)
-        puts "        / /".center(50)
+        puts "         / /".center(50)
         sleep(0.3)
-        puts "  `---' /".center(50)
+        puts "   `---' /".center(50)
         sleep(0.3)
-        puts "`-----'".center(50)
+        puts " `-----'".center(50)
     end
 
     def welcome
@@ -270,8 +270,14 @@ class Cli
     end
 
     def random_word
-        response = HTTParty.get("https://raw.githubusercontent.com/RazorSh4rk/random-word-api/master/words.json")
+        # response = HTTParty.get("https://raw.githubusercontent.com/RazorSh4rk/random-word-api/master/words.json")
+        response = HTTParty.get("https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json")
         json = JSON.parse(response.body)
+
+        #use for new json
+        json = json.keys
+        json = json.reject { |word| word.include?(" ") }
+
         json = json.select { |word| word.length > 3 && word.length < 14 }
         easy = json.select { |word| word.length < 6}
         medium = json.select { |word| word.length > 5 && word.length < 10 }
@@ -296,11 +302,11 @@ class Cli
             json = JSON.parse(response.body)
             definition = json[0].dig("def")
             entry = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
-            @current_game.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "")
+            @current_game.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "").gsub("dx_defsee dxt", "").gsub("dxt|", "").gsub(":3_def", "").gsub("1a_def", "")
         else
             definition = json[0].dig("def")
             entry = definition[0].dig("sseq").flatten[1].dig("dt").flatten[1]
-            @current_game.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "")
+            @current_game.hint = entry.gsub("{bc}", "").gsub("{sx|", "").gsub("{a_link|", "").gsub("{d_link|", "").gsub("||", "").gsub("}", "").gsub("{", "").gsub(":1", "").gsub(":2", "").gsub("dxsee dxt|", "").gsub("/dx", "").gsub("dx_defsee dxt", "").gsub("dxt|", "").gsub(":3_def", "").gsub("1a_def", "")
         end
     end
 
@@ -309,6 +315,7 @@ class Cli
         prompt = TTY::Prompt.new
         prompt.keypress("Your word is #{@current_game.word.length} letters long! Press space or enter to continue", keys: [:space, :return])
         prompt.keypress("Your hint is: #{@current_game.hint}", keys: [:space, :return])
+        system('clear')
         prompt.keypress("Make #{@current_game.available_guesses} incorrect guesses, and you lose!", keys: [:space, :return])
         self.word_teaser
     end
