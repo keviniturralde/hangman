@@ -1,10 +1,8 @@
 # Hangman
 
-
-README:
 INTRO:
 
-    - The Hangman App is an interactive app, which allows a user to play around with a lot of different features. They will save profiles and games associated with each user so they can track their progress. You’re also able to track the progress of other players who have and rise through the ranks of the leaderboard! Users will be able to play the game Hangman and learn new words in the process. Players can choose from 3 difficulty levels, easy, medium, and hard to accumulate wins! 
+The Hangman App is a game that implements Active Record to save users and games to a database. They will save profiles and games associated with each user so they can track their progress. You’re also able to track the progress of other players who have and rise through the ranks of the leaderboard! Users will be able to play the game Hangman and learn new words in the process. Players can choose from 3 difficulty levels, easy, medium, and hard to accumulate wins! 
 
 TO START: 
     - Please fork and clone the game repo
