@@ -17,6 +17,8 @@ GEM
     colorize (0.8.1)
     concurrent-ruby (1.1.7)
     dotenv (2.7.6)
+    faker (2.14.0)
+      i18n (>= 1.6, < 2)
     httparty (0.18.1)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -78,6 +80,7 @@ DEPENDENCIES
   artii
   colorize
   dotenv
+  faker
   httparty
   pry
   rake

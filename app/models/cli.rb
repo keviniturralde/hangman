@@ -16,7 +16,30 @@ Dotenv.load('./.env')
 
 
 
+
 class Cli
+
+    def new_intro
+
+        system('clear')
+        color_logo = {:color => :red}
+
+        puts" ██░ ██  ▄▄▄       ███▄    █   ▄████  ███▄ ▄███▓ ▄▄▄       ███▄    █  ".center(100).colorize(color_logo) 
+        puts"▓██░ ██▒▒████▄     ██ ▀█   █  ██▒ ▀█▒▓██▒▀█▀ ██▒▒████▄     ██ ▀█   █  ".center(100).colorize(color_logo) 
+        puts"▒██▀▀██░▒██  ▀█▄  ▓██  ▀█ ██▒▒██░▄▄▄░▓██    ▓██░▒██  ▀█▄  ▓██  ▀█ ██▒ ".center(100).colorize(color_logo) 
+        puts"░▓█ ░██ ░██▄▄▄▄██ ▓██▒  ▐▌██▒░▓█  ██▓▒██    ▒██ ░██▄▄▄▄██ ▓██▒  ▐▌██▒ ".center(100).colorize(color_logo) 
+        puts"░▓█▒░██▓ ▓█   ▓██▒▒██░   ▓██░░▒▓███▀▒▒██▒   ░██▒ ▓█   ▓██▒▒██░   ▓██░ ".center(100).colorize(color_logo) 
+        puts" ▒ ░░▒░▒ ▒▒   ▓▒█░░ ▒░   ▒ ▒  ░▒   ▒ ░ ▒░   ░  ░ ▒▒   ▓▒█░░ ▒░   ▒ ▒  ".center(100).colorize(color_logo) 
+        puts" ▒ ░▒░ ░  ▒   ▒▒ ░░ ░░   ░ ▒░  ░   ░ ░  ░      ░  ▒   ▒▒ ░░ ░░   ░ ▒░ ".center(100).colorize(color_logo) 
+        puts" ░  ░░ ░  ░   ▒      ░   ░ ░ ░ ░   ░ ░      ░     ░   ▒      ░   ░ ░  ".center(100).colorize(color_logo) 
+        puts" ░  ░  ░      ░  ░         ░       ░        ░         ░  ░         ░  ".center(100).colorize(color_logo) 
+        sleep(5)
+        TTY::Prompt.new.keypress("Press space or enter to continue".center(100), keys: [:space, :return])
+        self.welcome
+    end
+
+
+    
 
     def title_screen
         a = Artii::Base.new :font => 'alligator'
@@ -44,80 +67,60 @@ class Cli
         self.welcome
     end
 
-    # def intro2
-#     a = Artii::Base.new :font => 'alligator'
-#     puts a.asciify('H').light_green
-#     sleep(0.5)
-#     system("clear")
-#     puts a.asciify('HA').light_green
-#     sleep(0.5)
-#     system("clear")
-#     puts a.asciify('HAN').light_green
-#     sleep(0.5)
-#     system("clear")
-#     puts a.asciify('HANG').light_green
-#     sleep(0.5)
-#     system("clear")
-#     puts a.asciify('HANGM').light_green
-#     sleep(0.5)
-#     system("clear")
-#     puts a.asciify('HANGMA').light_green
-#     sleep(0.5)
-#     system("clear")
-#     puts a.asciify('HANGMAN').light_green
-#     sleep(3)
-#     puts "|/|".center(40)
-#     sleep(0.3)
-#     puts "|/|".center(40)
-#     sleep(0.3)
-#     puts "|/|".center(40)
-#     sleep(0.3)
-#     puts "|/|".center(40)
-#     sleep(0.3)
-#     puts "|/|".center(40)
-#     sleep(0.3)
-#     puts "|/|".center(40)
-#     sleep(0.3)
-#     puts "|/| /¯)".center(40)
-#     sleep(0.3)
-#     puts "|/|/ /".center(40)
-#     sleep(0.3)
-#     puts "|/| /".center(40)
-#     sleep(0.3)
-#     puts "(¯¯¯)".center(40)
-#     sleep(0.3)
-#     puts "(¯¯¯)".center(40)
-#     sleep(0.3)
-#     puts "(¯¯¯)".center(40)
-#     sleep(0.3)
-#     puts "(¯¯¯)".center(40)
-#     sleep(0.3)
-#     puts "(¯¯¯)".center(40)
-#     sleep(0.3)
-#     puts "/¯¯/ ".center(40)
-#     sleep(0.3)
-#     puts "/ ,^./ ".center(40)
-#     sleep(0.3)
-#     puts "/ /    / ".center(40)
-#     sleep(0.3)
-#     puts "/ /      / ".center(40)
-#     sleep(0.3)
-#     puts "( (       )/)".center(40)
-#     sleep(0.3)
-#     puts "| |       |/|".center(40)
-#     sleep(0.3)
-#     puts "| |       |/|".center(40)
-#     sleep(0.3)
-#     puts "| |       |/|".center(40)
-#     sleep(0.3)
-#     puts "( (       )/)".center(40)
-#     sleep(0.3)
-#     puts "        / /".center(40)
-#     sleep(0.3)
-#     puts "  `---' /".center(40)
-#     sleep(0.3)
-#     puts "`-----'".center(40)
-# end
+    def noose
+
+        puts "|/|".center(50)
+        sleep(0.3)
+        puts "|/|".center(50)
+        sleep(0.3)
+        puts "|/|".center(50)
+        sleep(0.3)
+        puts "|/|".center(50)
+        sleep(0.3)
+        puts "|/|".center(50)
+        sleep(0.3)
+        puts "|/|".center(50)
+        sleep(0.3)
+        puts "|/| /¯)".center(50)
+        sleep(0.3)
+        puts "|/|/ /".center(50)
+        sleep(0.3)
+        puts "|/| /".center(50)
+        sleep(0.3)
+        puts "(¯¯¯)".center(50)
+        sleep(0.3)
+        puts "(¯¯¯)".center(50)
+        sleep(0.3)
+        puts "(¯¯¯)".center(50)
+        sleep(0.3)
+        puts "(¯¯¯)".center(50)
+        sleep(0.3)
+        puts "(¯¯¯)".center(50)
+        sleep(0.3)
+        puts "/¯¯/ ".center(50)
+        sleep(0.3)
+        puts "/ ,^./ ".center(50)
+        sleep(0.3)
+        puts "/ /    / ".center(50)
+        sleep(0.3)
+        puts "/ /      / ".center(50)
+        sleep(0.3)
+        puts "( (       )/)".center(50)
+        sleep(0.3)
+        puts "| |       |/|".center(50)
+        sleep(0.3)
+        puts "| |       |/|".center(50)
+        sleep(0.3)
+        puts "| |       |/|".center(50)
+        sleep(0.3)
+        puts "( (       )/)".center(50)
+        sleep(0.3)
+        puts "        / /".center(50)
+        sleep(0.3)
+        puts "  `---' /".center(50)
+        sleep(0.3)
+        puts "`-----'".center(50)
+    end
 
     def welcome
             system('clear')
@@ -170,7 +173,7 @@ class Cli
                 menu.choice "Go back to leaderboard"
                 menu.choice "Go back to main menu"
             end
-            
+
             case menuselect2
             when "Go back to leaderboard"
                 self.leaderboard
@@ -311,6 +314,7 @@ class Cli
     end
 
     def word_teaser
+        system('clear')
         @teaser = []
         @wrong_guess = []
         @current_game.word.length.times do
@@ -318,6 +322,10 @@ class Cli
         end
         puts @teaser.join("")
         self.make_a_guess
+    end
+
+    def if_right
+        
     end
 
     def make_a_guess
@@ -339,23 +347,46 @@ class Cli
                             @teaser[i] = guess
                         end
                     end
-                    puts "Nice!"
+
+                    compliments = [
+                        "You're pretty good at this...", 
+                        "You a genius!", 
+                        "Much smart! Very wow!", 
+                        "How did you know...?", 
+                        "You're the best!", 
+                        "DJ Khaled voice - 'Anotha 1'", 
+                        "Okuuurrrrrrrrrr!", 
+                        "Your Academics Have Increased +1", 
+                        "LETS GOOOOOOOOO!!!", 
+                        "Woot woot!", 
+                        "The 'man' will not 'hang' today..."]
+                        
+                    compliments.sample.each_char {|c| putc c ; sleep 0.03; }
+                    puts 
+                    sleep(1.5)
                     puts @teaser.join("") 
                     self.make_a_guess
                 else
                     system('clear')
                     @current_game.available_guesses -= 1
                     @wrong_guess << guess
-                    puts "Sorry, your guess was incorrect. You have #{@current_game.available_guesses} guesses remaining!"
+                    puts "Sorry! your guess was incorrect. You have #{@current_game.available_guesses} guesses remaining!"
                     puts @teaser.join("") 
                     self.make_a_guess
                 end
             end
         else
             system('clear')
-            puts "You Lose!"
-            puts "The correct word was #{@current_game.word}!"
+            a = Artii::Base.new :font => 'alligator'
+            puts a.asciify('OH NO!').red
             sleep(2)
+            self.noose
+            sleep(2)
+            "The correct word was...".each_char {|c| putc c ; sleep 0.03; }
+            sleep(1)
+            puts "#{@current_game.word}!"
+            sleep(2)
+            system('clear')
             again = TTY::Prompt.new.select("Would you like to play again?") do |menu|
                 menu.choice "Yes"
                 menu.choice "No"
@@ -380,7 +411,8 @@ class Cli
         @current_user.save
         system("clear")
         puts "#{@current_game.word.green} : #{@current_game.hint}"
-        puts "You WIN!"
+        a = Artii::Base.new :font => 'alligator'
+        puts a.asciify('YOU WIN!').green
         sleep(2)
         again = TTY::Prompt.new.select("Would you like to play again?") do |menu|
             menu.choice "Yes"
@@ -393,7 +425,8 @@ class Cli
         when "No"
             self.welcome
         when "Exit"
-            puts "Thanks for playing!"
+            a = Artii::Base.new :font => 'alligator'
+            puts a.asciify('THANKS FOR PLAYING!').green
             sleep(2)
         end
     end
