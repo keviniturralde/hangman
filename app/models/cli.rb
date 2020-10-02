@@ -143,6 +143,7 @@ class Cli
             rows = []
             stats.each { |ug| rows << [ug.game_id, Game.find(ug.game_id).difficulty, ug.won_game, Game.find(ug.game_id).word]}
             table2 = Terminal::Table.new :title => "User Stats for #{stats[0].user.username}", :headings => ['Game ID','Difficulty', 'Won?', 'Word'], :rows => rows
+            system('clear')
             puts table2
 
             menuselect2 = TTY::Prompt.new.select("Choose an option") do |menu|
@@ -253,7 +254,7 @@ class Cli
         #use for new json
         json = json.keys
         json = json.reject { |word| word.include?(" ") }
-
+        json = json.reject { |word| /\s/.match(word) }
         json = json.select { |word| word.length > 3 && word.length < 14 }
         easy = json.select { |word| word.length < 6}
         medium = json.select { |word| word.length > 5 && word.length < 10 }
