@@ -324,10 +324,6 @@ class Cli
         self.make_a_guess
     end
 
-    def if_right
-        
-    end
-
     def make_a_guess
         if @current_game.available_guesses > 0
             if @teaser.join("") == @current_game.word
@@ -410,9 +406,9 @@ class Cli
         @current_user.score += 1
         @current_user.save
         system("clear")
-        puts "#{@current_game.word.green} : #{@current_game.hint}"
         a = Artii::Base.new :font => 'alligator'
         puts a.asciify('YOU WIN!').green
+        puts "#{@current_game.word.green} : #{@current_game.hint}"
         sleep(2)
         again = TTY::Prompt.new.select("Would you like to play again?") do |menu|
             menu.choice "Yes"
@@ -425,8 +421,7 @@ class Cli
         when "No"
             self.welcome
         when "Exit"
-            a = Artii::Base.new :font => 'alligator'
-            puts a.asciify('THANKS FOR PLAYING!').green
+            puts "Thanks for playing!"
             sleep(2)
         end
     end
