@@ -15,31 +15,7 @@ Dotenv.load('./.env')
 
 
 
-
-
 class Cli
-
-    def new_intro
-
-        system('clear')
-        color_logo = {:color => :red}
-
-        puts" ██░ ██  ▄▄▄       ███▄    █   ▄████  ███▄ ▄███▓ ▄▄▄       ███▄    █  ".center(100).colorize(color_logo) 
-        puts"▓██░ ██▒▒████▄     ██ ▀█   █  ██▒ ▀█▒▓██▒▀█▀ ██▒▒████▄     ██ ▀█   █  ".center(100).colorize(color_logo) 
-        puts"▒██▀▀██░▒██  ▀█▄  ▓██  ▀█ ██▒▒██░▄▄▄░▓██    ▓██░▒██  ▀█▄  ▓██  ▀█ ██▒ ".center(100).colorize(color_logo) 
-        puts"░▓█ ░██ ░██▄▄▄▄██ ▓██▒  ▐▌██▒░▓█  ██▓▒██    ▒██ ░██▄▄▄▄██ ▓██▒  ▐▌██▒ ".center(100).colorize(color_logo) 
-        puts"░▓█▒░██▓ ▓█   ▓██▒▒██░   ▓██░░▒▓███▀▒▒██▒   ░██▒ ▓█   ▓██▒▒██░   ▓██░ ".center(100).colorize(color_logo) 
-        puts" ▒ ░░▒░▒ ▒▒   ▓▒█░░ ▒░   ▒ ▒  ░▒   ▒ ░ ▒░   ░  ░ ▒▒   ▓▒█░░ ▒░   ▒ ▒  ".center(100).colorize(color_logo) 
-        puts" ▒ ░▒░ ░  ▒   ▒▒ ░░ ░░   ░ ▒░  ░   ░ ░  ░      ░  ▒   ▒▒ ░░ ░░   ░ ▒░ ".center(100).colorize(color_logo) 
-        puts" ░  ░░ ░  ░   ▒      ░   ░ ░ ░ ░   ░ ░      ░     ░   ▒      ░   ░ ░  ".center(100).colorize(color_logo) 
-        puts" ░  ░  ░      ░  ░         ░       ░        ░         ░  ░         ░  ".center(100).colorize(color_logo) 
-        sleep(5)
-        TTY::Prompt.new.keypress("Press space or enter to continue".center(100), keys: [:space, :return])
-        self.welcome
-    end
-
-
-    
 
     def title_screen
         a = Artii::Base.new :font => 'alligator'
